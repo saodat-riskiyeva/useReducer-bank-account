@@ -1,5 +1,5 @@
 import "./styles.css";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 
 /*
 INSTRUCTIONS / CONSIDERATIONS:
@@ -25,6 +25,7 @@ const initialState = {
   isActive: false,
 };
 
+// =openAccount=, =deposit=, =withdraw=, requestLoan, payLoan, =closeAccount=
 function reducer(state, action) {
   switch (action.type) {
     case "openAccount":
@@ -35,12 +36,13 @@ function reducer(state, action) {
     case "deposit":
       return {
         ...state,
-        balance: state.balance + 150,
+        isActive: true,
+        balance: state.balance + Number(action.payload),
       };
     case "withdraw":
       return {
         ...state,
-        balance: state.balance - 50,
+        balance: state.balance - Number(action.payload),
       };
     case "closeAccount":
       return {
@@ -51,16 +53,39 @@ function reducer(state, action) {
       throw new Error("Action is unknown");
   }
 }
-// openAccount, deposit, withdraw, requestLoan, payLoan, closeAccount
 
 export default function App() {
-  const [{ isActive }, dispatch] = useReducer(reducer, initialState);
+  const [{ balance, loan, isActive }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
+
+  const [deposit, setDeposit] = useState("");
+  const [withdraw, setWithdraw] = useState("");
+
+  function handleDepositAmount(data) {
+    setDeposit(data);
+  }
+
+  function handleWithdrawAmount(data) {
+    setWithdraw(data);
+  }
+
+  function handleDeposit() {
+    setDeposit("");
+    dispatch({ type: "deposit", payload: deposit });
+  }
+
+  function handleWithdraw() {
+    setWithdraw("");
+    dispatch({ type: "withdraw", payload: withdraw });
+  }
 
   return (
     <div className="App">
       <h1>useReducer Bank Account</h1>
-      <p>Balance: X</p>
-      <p>Loan: X</p>
+      <p>Balance: {balance}</p>
+      <p>Loan: {loan}</p>
 
       <p>
         <button
@@ -71,13 +96,27 @@ export default function App() {
         </button>
       </p>
       <p>
-        <button onClick={() => dispatch({ type: "deposit" })} disabled={false}>
-          Deposit 150
+        <span>
+          <input
+            type="number"
+            value={deposit}
+            onChange={(e) => handleDepositAmount(e.target.value)}
+          />
+        </span>
+        <button onClick={() => handleDeposit()} disabled={false}>
+          Deposit
         </button>
       </p>
       <p>
-        <button onClick={() => dispatch({ type: "withdraw" })} disabled={false}>
-          Withdraw 50
+        <span>
+          <input
+            type="number"
+            value={withdraw}
+            onChange={(e) => handleWithdrawAmount(e.target.value)}
+          />
+        </span>
+        <button onClick={() => handleWithdraw()} disabled={false}>
+          Withdraw
         </button>
       </p>
       <p>
