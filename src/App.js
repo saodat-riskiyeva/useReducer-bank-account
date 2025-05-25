@@ -25,7 +25,7 @@ const initialState = {
   isActive: false,
 };
 
-// =openAccount=, =deposit=, =withdraw=, requestLoan, payLoan, =closeAccount=
+// =openAccount=, =deposit=, =withdraw=, =requestLoan=, payLoan, =closeAccount=
 function reducer(state, action) {
   switch (action.type) {
     case "openAccount":
@@ -43,6 +43,11 @@ function reducer(state, action) {
       return {
         ...state,
         balance: state.balance - Number(action.payload),
+      };
+    case "requesLoan":
+      return {
+        ...state,
+        loan: state.loan + Number(action.payload),
       };
     case "closeAccount":
       return {
@@ -62,6 +67,7 @@ export default function App() {
 
   const [deposit, setDeposit] = useState("");
   const [withdraw, setWithdraw] = useState("");
+  const [loanAmount, setLoanAmount] = useState("");
 
   function handleDepositAmount(data) {
     setDeposit(data);
@@ -69,6 +75,10 @@ export default function App() {
 
   function handleWithdrawAmount(data) {
     setWithdraw(data);
+  }
+
+  function handleLoanAmount(data) {
+    setLoanAmount(data);
   }
 
   function handleDeposit() {
@@ -79,6 +89,11 @@ export default function App() {
   function handleWithdraw() {
     setWithdraw("");
     dispatch({ type: "withdraw", payload: withdraw });
+  }
+
+  function handleLoan() {
+    setLoanAmount("");
+    dispatch({ type: "requesLoan", payload: loanAmount });
   }
 
   return (
@@ -120,9 +135,16 @@ export default function App() {
         </button>
       </p>
       <p>
-        <button onClick={() => {}} disabled={false}>
-          Request a loan of 5000
+        <button onClick={() => handleLoan()} disabled={false}>
+          Request a loan of
         </button>
+        <span>
+          <input
+            type="number"
+            value={loanAmount}
+            onChange={(e) => handleLoanAmount(e.target.value)}
+          />
+        </span>
       </p>
       <p>
         <button onClick={() => {}} disabled={false}>
