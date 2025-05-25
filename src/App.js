@@ -48,6 +48,7 @@ function reducer(state, action) {
     case "requesLoan":
       return {
         ...state,
+        balance: state.balance + Number(action.payload),
         loan: state.loan + Number(action.payload),
       };
     case "closeAccount":
@@ -93,8 +94,12 @@ export default function App() {
   }
 
   function handleLoan() {
-    setLoanAmount("");
-    dispatch({ type: "requesLoan", payload: loanAmount });
+    if (loan === 0) {
+      setLoanAmount("");
+      dispatch({ type: "requesLoan", payload: loanAmount });
+    } else {
+      return;
+    }
   }
 
   return (
