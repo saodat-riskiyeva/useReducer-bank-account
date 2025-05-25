@@ -63,7 +63,7 @@ function reducer(state, action) {
     case "closeAccount":
       return {
         ...state,
-        isActive: false,
+        isActive: state.balance === 0 ? false : true,
       };
     default:
       throw new Error("Action is unknown");
@@ -108,13 +108,9 @@ export default function App() {
   }
 
   function handleAccountClose() {
-    console.log(typeof balance);
-    if (balance === 0) {
-      dispatch({ type: "closeAccount" });
-    } else {
-      return;
-    }
+    dispatch({ type: "closeAccount" });
   }
+
   return (
     <div className="App">
       <h1>useReducer Bank Account</h1>
