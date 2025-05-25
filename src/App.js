@@ -108,6 +108,14 @@ export default function App() {
     }
   }
 
+  function handleAccountClose() {
+    console.log(typeof balance);
+    if (balance === 0) {
+      dispatch({ type: "closeAccount" });
+    } else {
+      return;
+    }
+  }
   return (
     <div className="App">
       <h1>useReducer Bank Account</h1>
@@ -167,10 +175,7 @@ export default function App() {
         </button>
       </p>
       <p>
-        <button
-          onClick={() => dispatch({ type: "closeAccount" })}
-          disabled={!isActive}
-        >
+        <button onClick={() => handleAccountClose()} disabled={!isActive}>
           Close account
         </button>
       </p>
