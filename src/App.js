@@ -31,6 +31,7 @@ function reducer(state, action) {
     case "openAccount":
       return {
         ...state,
+        balance: 500,
         isActive: true,
       };
     case "deposit":
@@ -105,7 +106,7 @@ export default function App() {
       <p>
         <button
           onClick={() => dispatch({ type: "openAccount" })}
-          disabled={false}
+          disabled={isActive}
         >
           Open account
         </button>
@@ -118,7 +119,7 @@ export default function App() {
             onChange={(e) => handleDepositAmount(e.target.value)}
           />
         </span>
-        <button onClick={() => handleDeposit()} disabled={false}>
+        <button onClick={() => handleDeposit()} disabled={!isActive}>
           Deposit
         </button>
       </p>
@@ -130,12 +131,12 @@ export default function App() {
             onChange={(e) => handleWithdrawAmount(e.target.value)}
           />
         </span>
-        <button onClick={() => handleWithdraw()} disabled={false}>
+        <button onClick={() => handleWithdraw()} disabled={!isActive}>
           Withdraw
         </button>
       </p>
       <p>
-        <button onClick={() => handleLoan()} disabled={false}>
+        <button onClick={() => handleLoan()} disabled={!isActive}>
           Request a loan of
         </button>
         <span>
@@ -147,14 +148,14 @@ export default function App() {
         </span>
       </p>
       <p>
-        <button onClick={() => {}} disabled={false}>
+        <button onClick={() => {}} disabled={!isActive}>
           Pay loan
         </button>
       </p>
       <p>
         <button
           onClick={() => dispatch({ type: "closeAccount" })}
-          disabled={false}
+          disabled={!isActive}
         >
           Close account
         </button>
