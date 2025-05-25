@@ -1,4 +1,5 @@
 import "./styles.css";
+import { useReducer } from "react";
 
 /*
 INSTRUCTIONS / CONSIDERATIONS:
@@ -24,7 +25,37 @@ const initialState = {
   isActive: false,
 };
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "openAccount":
+      return {
+        ...state,
+        isActive: true,
+      };
+    case "deposit":
+      return {
+        ...state,
+        balance: state.balance + 150,
+      };
+    case "withdraw":
+      return {
+        ...state,
+        balance: state.balance - 50,
+      };
+    case "closeAccount":
+      return {
+        ...state,
+        isActive: false,
+      };
+    default:
+      throw new Error("Action is unknown");
+  }
+}
+// openAccount, deposit, withdraw, requestLoan, payLoan, closeAccount
+
 export default function App() {
+  const [{ isActive }, dispatch] = useReducer(reducer, initialState);
+
   return (
     <div className="App">
       <h1>useReducer Bank Account</h1>
@@ -32,17 +63,20 @@ export default function App() {
       <p>Loan: X</p>
 
       <p>
-        <button onClick={() => {}} disabled={false}>
+        <button
+          onClick={() => dispatch({ type: "openAccount" })}
+          disabled={false}
+        >
           Open account
         </button>
       </p>
       <p>
-        <button onClick={() => {}} disabled={false}>
+        <button onClick={() => dispatch({ type: "deposit" })} disabled={false}>
           Deposit 150
         </button>
       </p>
       <p>
-        <button onClick={() => {}} disabled={false}>
+        <button onClick={() => dispatch({ type: "withdraw" })} disabled={false}>
           Withdraw 50
         </button>
       </p>
@@ -57,7 +91,10 @@ export default function App() {
         </button>
       </p>
       <p>
-        <button onClick={() => {}} disabled={false}>
+        <button
+          onClick={() => dispatch({ type: "closeAccount" })}
+          disabled={false}
+        >
           Close account
         </button>
       </p>
